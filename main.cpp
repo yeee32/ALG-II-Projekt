@@ -2,10 +2,11 @@
 #include <vector>
 #include <fstream>
 #include <filesystem>
-#include <unordered_map>
+#include <map>
 #include <chrono>
 #include "bst.h"
 #include "avl.h"
+#include "opt.h"
 
 using namespace std;
 
@@ -23,40 +24,65 @@ vector<string> getInput(ifstream& file){
     file.close();
     return allWords;
 }
+
 template <typename T>
-void printTreeStuff(T tree, int uniqueCount){
+void printTreeStuff(T tree, int uniqueCount, ofstream& out){
     if(is_same_v<T, BinarySearchTree>){
-        cout << "Binary search tree test" << endl;
+        out << "Binary search tree test" << endl;
+        out << "Building tree...done." << endl;
     }
     if(is_same_v<T, AVLTree>){
-        cout << "AVL tree test" << endl;
+        out << "AVL tree test" << endl;
+        out << "Building tree...done." << endl;
     }
-    cout << "Building tree...done." << endl;
-    cout << "Number of unique words: " << uniqueCount << endl;
-    cout << "Height of tree: " << tree.getHeight() << endl;
-    cout << "All words found." << endl;
-    cout << "Average search depth: " << tree.avgSearchDepth() << endl;
-    cout << endl;
+    if(is_same_v<T, OPTree>){
+        out << "Optimal binary search tree test" << endl;
+    }
+    out << "Number of unique words: " << uniqueCount << endl;
+    out << "Height of tree: " << tree.getHeight() << endl;
+    out << "All words found." << endl;
+    out << "Average search depth: " << tree.avgSearchDepth() << endl;
+    out << endl;
 }
 
-void header(int wordCount){
-    cout << "Reading source word...done." << endl;
-    cout << "Number of words: " << wordCount << endl << endl;
+void header(int wordCount, ostream& out){
+    out << "Reading source word...done." << endl;
+    out << "Number of words: " << wordCount << endl << endl;
 }
 
-int main(){
+int main(int argc, char* argv[]){
     auto start = std::chrono::high_resolution_clock::now();
-    ifstream inputFile("TestData/OptimalniBinarniVyhledavaciStrom/Test5.txt");
+
+    if(argc != 2){
+        cout << "need file name" << endl;
+        exit(1);
+    }
+
+    string path = "TestData/OptimalniBinarniVyhledavaciStrom/";
+    path.append(argv[1]);
+    ifstream inputFile(path);
+
     if (!inputFile.is_open()){
         cout << "Failed to open the file!" << endl;
-        return 1;
+        exit(1);
     }
 
-    unordered_map<string, int> freqMap;
+    ofstream outputFile("result.txt");
+
+    map<string, int> freqMap;
     vector<string> wrds = getInput(inputFile);    
 
     for(const auto& word : wrds){
-        freqMap[word]++; 
+        freqMap[word]++; // gets unique words and their frequency
+    }
+
+    vector<string> keys;
+    vector<int> freqs;
+
+    // ordered keys and values
+    for (auto &p : freqMap) {
+        keys.push_back(p.first);
+        freqs.push_back(p.second);
     }
 
     int wordCount = wrds.size();
@@ -72,15 +98,20 @@ int main(){
         avl.insert(word);
     }
     
-    header(wordCount);
-    printTreeStuff(bst, uniqueCount);
-    printTreeStuff(avl, uniqueCount);
+    OPTree opt(keys, freqs);
+    opt.compute();
+
+    header(wordCount, outputFile);
+    printTreeStuff(bst, uniqueCount, outputFile);
+    printTreeStuff(avl, uniqueCount, outputFile);
+    printTreeStuff(opt, uniqueCount, outputFile);
 
     auto end = chrono::high_resolution_clock::now();
 
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
 
-    cout << "Program ran for " << duration.count() << " ms" << std::endl;
+    outputFile << "Program ran for " << duration.count() << " ms";
 
+    outputFile.close();
     return 0;
 }
