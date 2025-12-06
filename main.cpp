@@ -1,9 +1,11 @@
 #include <iostream>
-#include "bst.h"
 #include <vector>
 #include <fstream>
 #include <filesystem>
+#include <unordered_map>
 #include <chrono>
+#include "bst.h"
+#include "avl.h"
 
 using namespace std;
 
@@ -22,10 +24,24 @@ vector<string> getInput(ifstream& file){
     return allWords;
 }
 template <typename T>
-void printTreeStuff(T tree){
+void printTreeStuff(T tree, int uniqueCount){
+    if(is_same_v<T, BinarySearchTree>){
+        cout << "Binary search tree test" << endl;
+    }
+    if(is_same_v<T, AVLTree>){
+        cout << "AVL tree test" << endl;
+    }
+    cout << "Building tree...done." << endl;
+    cout << "Number of unique words: " << uniqueCount << endl;
     cout << "Height of tree: " << tree.getHeight() << endl;
     cout << "All words found." << endl;
     cout << "Average search depth: " << tree.avgSearchDepth() << endl;
+    cout << endl;
+}
+
+void header(int wordCount){
+    cout << "Reading source word...done." << endl;
+    cout << "Number of words: " << wordCount << endl << endl;
 }
 
 int main(){
@@ -43,10 +59,6 @@ int main(){
         freqMap[word]++; 
     }
 
-    for(const auto& w : freqMap){
-        cout << w.first << " : " << w.second << endl;
-    }
-
     int wordCount = wrds.size();
     int uniqueCount = freqMap.size();
 
@@ -54,16 +66,15 @@ int main(){
     for(const auto& word : wrds){
         bst.insert(word);
     }
-    
-    cout << "Reading source word...done." << endl;
-    cout << "Number of words: " << wordCount << endl << endl;
-    cout << "Binary search tree test" << endl;
-    cout << "Building tree...done." << endl;
-    cout << "Number of unique words: " << uniqueCount << endl;
-    printTreeStuff(bst);
 
-     // odstranit potom
-    // bst.printBST(bst.getRoot(), 0);
+    AVLTree avl;
+    for(const auto& word : wrds){
+        avl.insert(word);
+    }
+    
+    header(wordCount);
+    printTreeStuff(bst, uniqueCount);
+    printTreeStuff(avl, uniqueCount);
 
     auto end = chrono::high_resolution_clock::now();
 
