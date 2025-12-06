@@ -3,6 +3,20 @@ A project that implements:
   * Binary search tree
   * AVL tree
   * Optimal binary search tree
+
+## Build
+```
+make
+```
+## Usage
+```
+./trees <input_file>
+```
+## Example usage
+```
+./trees Test1.txt
+```
+
 ## Example input
 Anton\
 Caesar\
