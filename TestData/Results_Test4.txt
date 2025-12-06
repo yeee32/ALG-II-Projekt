@@ -1,0 +1,22 @@
+Reading source word...done.
+Number of words: 10000
+
+Binary search tree test
+Building tree...done.
+Number of unique words: 1120
+Height of tree: 22
+All words found.
+Average search depth: 7.64
+
+AVL tree test
+Building tree...done.
+Number of unique words: 1120
+Height of tree: 12
+All words found.
+Average search depth: 7.4407
+
+Optimal binary search tree test
+Number of unique words: 1120
+Height of tree: 14
+All words found.
+Average search depth: 5.9627
