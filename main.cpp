@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
-    string path = "TestData/OptimalniBinarniVyhledavaciStrom/";
+    string path = "TestData/";
     path.append(argv[1]);
     ifstream inputFile(path);
 
