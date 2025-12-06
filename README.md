@@ -10,11 +10,11 @@ make
 ```
 ## Usage
 ```
-./trees <input_file>
+./trees <input_file> <output_file>
 ```
 ## Example usage
 ```
-./trees Test1.txt
+./trees Test1.txt result.txt
 ```
 
 ## Example input
