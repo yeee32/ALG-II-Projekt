@@ -53,8 +53,8 @@ void header(int wordCount, ostream& out){
 int main(int argc, char* argv[]){
     auto start = std::chrono::high_resolution_clock::now();
 
-    if(argc != 2){
-        cout << "need file name" << endl;
+    if(argc != 3){
+        cout << "need input or output file" << endl;
         exit(1);
     }
 
@@ -67,7 +67,7 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
-    ofstream outputFile("result.txt");
+    ofstream outputFile(argv[2]);
 
     map<string, int> freqMap;
     vector<string> wrds = getInput(inputFile);    
