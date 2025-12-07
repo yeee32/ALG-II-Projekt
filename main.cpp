@@ -13,7 +13,7 @@ using namespace std;
 vector<string> getInput(ifstream& file){
     vector<string> allWords (0);
     string line;
-
+    // reads lines from file
     while(getline(file, line)){
         if(!line.empty() && line.back() == '\r'){ // removes the stupid invisible '\r' at the end of words
             line.pop_back();
@@ -26,6 +26,7 @@ vector<string> getInput(ifstream& file){
 }
 
 template <typename T>
+// prints the structure
 void printTreeStuff(T tree, int uniqueCount, ofstream& out){
     if(is_same_v<T, BinarySearchTree>){
         out << "Binary search tree test" << endl;
@@ -80,7 +81,7 @@ int main(int argc, char* argv[]){
     vector<int> freqs;
 
     // ordered keys and values
-    for (auto &p : freqMap) {
+    for(auto &p : freqMap){
         keys.push_back(p.first);
         freqs.push_back(p.second);
     }
@@ -110,8 +111,10 @@ int main(int argc, char* argv[]){
 
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
 
-    outputFile << "Program ran for " << duration.count() << " ms";
-
     outputFile.close();
+    
+    cout << "Succesfully finished <" << argv[1] << ">"<< endl;
+    cout << "Program took " << duration.count() << " ms" << endl;
+
     return 0;
 }

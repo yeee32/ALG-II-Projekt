@@ -30,7 +30,7 @@ void BinarySearchTree::insert(const string& key){
     }
 }
 
-BST_node* BinarySearchTree::search(BST_node* node, string key){
+BST_node* BinarySearchTree::search(BST_node* node, const string& key){
     if(node == nullptr || node->key == key){
         return node;
     }

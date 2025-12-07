@@ -9,7 +9,7 @@ class BinarySearchTree{
     public:
         BinarySearchTree() : root(nullptr) {}
         void insert(const string& key);
-        BST_node* search(BST_node* node, string key);
+        BST_node* search(BST_node* node, const string& key);
         BST_node* getRoot();
         int getHeight();
         double avgSearchDepth();

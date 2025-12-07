@@ -14,8 +14,8 @@ class AVLTree{
         int height(AVL_node* node);
 
     public:
-        AVLTree() : root(nullptr) {}
-        void insert(const string& key);
-        int getHeight();
-        double avgSearchDepth();
+    AVLTree() : root(nullptr) {}
+    void insert(const string& key);
+    int getHeight();
+    double avgSearchDepth();
 };
