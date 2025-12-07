@@ -1,46 +1,56 @@
 #include "opt.h"
+#include <climits>
 
 OPTree::OPTree(const vector<string>& keys, const vector<int>& freqs) : allKeys(keys), frequencies(freqs), n(keys.size()){
-    costs.assign(n, std::vector<int>(n, 0));
-    roots.assign(n, std::vector<int>(n, 0));
+    costs.assign(n, vector<int>(n, 0));
+    roots.assign(n, vector<int>(n, 0));
 }
 
 int OPTree::compute(){
+    // knuths optimization
     for(int i = 0; i < n; i++){
         costs[i][i] = frequencies[i];
         roots[i][i] = i;
     }
 
-    for (int size = 1; size < n; size++) {
-        for (int L = 0; L + size < n; L++) {
-            int R = L + size;
-
+    for(int i = n-2; i >= 0; i--){
+        for(int j = i+1; j  < n; j++){
             int sumFreq = 0;
-            for(int k = L; k <= R; k++)
+            for(int k = i; k <= j; k++){
                 sumFreq += frequencies[k];
+            }
+            
+            int leftBound = roots[i][j - 1];
+            int rightBound   = roots[i + 1][j];
 
-            long long bestCost = INT64_MAX;
-            int bestRoot = -1;
+            if(leftBound < i){
+                leftBound = i;
+            }
+            if(rightBound > j){
+                rightBound = j;
+            }  
 
-            for(int r = L; r <= R; r++){
+            int bestCost = INT_MAX;
+
+            for(int k = leftBound; k <= rightBound; k++){
                 int leftCost = 0;
-                if(r > L){
-                    leftCost = costs[L][r - 1];
+                if(k > i){
+                    leftCost = costs[i][k - 1];
                 }
+
                 int rightCost = 0;
-                if(r < R){
-                    rightCost = costs[r + 1][R];
+                if(k < j){
+                    rightCost = costs[k + 1][j];
                 }
-                int total = leftCost + rightCost;
+                int total = leftCost + rightCost + sumFreq;
 
                 if(total < bestCost){
                     bestCost = total;
-                    bestRoot = r;
+                    roots[i][j] = k;
                 }
             }
 
-            costs[L][R] = bestCost + sumFreq;
-            roots[L][R] = bestRoot;
+            costs[i][j] = bestCost;
         }
     }
 
