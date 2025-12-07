@@ -5,8 +5,8 @@ class OPTree{
     private:
         vector<vector<int>> costs;
         vector<vector<int>> roots;
-        vector<int> frequencies;
         vector<string> allKeys;
+        vector<int> frequencies;
         int height(OPT_node* node);
         void recursiveWeightedDepth(OPT_node* node, int depth, long long& sum, long long& totalFreq);
         int n;
